@@ -6,6 +6,13 @@ Ejecuta este comando en el directorio raíz del proyecto para instalar las depen
     npm install
 ```
 
+## Ejecutar el Servidor
+
+Para iniciar el servidor, ejecuta el siguiente comando:
+
+```bash
+    node server.js
+```
 
 # Endpoints de la API
 
