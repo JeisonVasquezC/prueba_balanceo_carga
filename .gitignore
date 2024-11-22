@@ -1,3 +1,7 @@
+# Archivos específicos de datos grandes o temporales
+#data/large-file.txt
+#data/tempData.txt
+
 # Node.js modules
 node_modules/
 
@@ -8,30 +12,30 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables
+# Variables de entorno
 .env
 
-# OS-specific files
+# Archivos específicos del sistema operativo
 .DS_Store
 Thumbs.db
 
-# Dependency directories for tools
-/.pnp
+# Archivos de configuración de herramientas (Plug'n'Play para Yarn)
+.pnp
 .pnp.js
 
-# Optional npm cache directory
+# Caché opcional de npm
 .npm/
 
-# IDE/Editor settings
+# Configuraciones de IDE/Editor
 .idea/
 .vscode/
 *.swp
 
-# Build directories
+# Directorios de construcción (build)
 dist/
 build/
 
-# Optional lock files
+# Archivos de bloqueo de dependencias
 package-lock.json
 yarn.lock
 pnpm-lock.yaml
