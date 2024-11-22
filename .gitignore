@@ -1,6 +1,6 @@
 # Archivos específicos de datos grandes o temporales
-#data/large-file.txt
-#data/tempData.txt
+data/large-file.txt
+data/tempData.txt
 
 # Node.js modules
 node_modules/

@@ -3,6 +3,7 @@ const path = require('path');
 
 // Ruta del archivo temporal para simular E/S
 const filePath = path.join(__dirname, '../data/tempData.txt');
+const dirPath = path.dirname(filePath);  // Ruta del directorio
 
 // Función para agregar datos al final del archivo
 const appendToFile = (data) => {
@@ -10,6 +11,14 @@ const appendToFile = (data) => {
     const dataToWrite = `${new Date().toISOString()} - ${data}\n`; // Formatear los datos con timestamp
 
     console.log('Iniciando la escritura en el archivo...'); // Log de inicio de la escritura
+
+    // Asegurarse de que el directorio exista, si no, crear el directorio
+    if (!fs.existsSync(dirPath)) {
+      console.log(`El directorio ${dirPath} no existe. Creando el directorio...`); // Log de directorio no existe
+      fs.mkdirSync(dirPath, { recursive: true });  // Crea el directorio si no existe
+      console.log('Directorio creado:', dirPath);
+    }
+
     fs.appendFile(filePath, dataToWrite, 'utf8', (err) => {
       if (err) {
         console.error('Error al escribir en el archivo:', err); // Log de error en la escritura
@@ -25,6 +34,22 @@ const appendToFile = (data) => {
 const readFromFile = () => {
   return new Promise((resolve, reject) => {
     console.log('Iniciando la lectura del archivo...'); // Log de inicio de la lectura
+
+    // Verificar si el archivo existe antes de leerlo
+    if (!fs.existsSync(filePath)) {
+      console.log(`El archivo ${filePath} no existe. Creando el archivo vacío...`);  // Log si el archivo no existe
+
+      // Asegurarse de que el directorio exista, si no, crear el directorio
+      if (!fs.existsSync(dirPath)) {
+        console.log(`El directorio ${dirPath} no existe. Creando el directorio...`);
+        fs.mkdirSync(dirPath, { recursive: true });
+        console.log('Directorio creado:', dirPath);
+      }
+
+      fs.writeFileSync(filePath, '', 'utf8'); // Crea el archivo vacío si no existe
+      console.log(`Archivo ${filePath} creado exitosamente.`);
+    }
+
     fs.readFile(filePath, 'utf8', (err, data) => {
       if (err) {
         console.error('Error al leer el archivo:', err); // Log de error en la lectura

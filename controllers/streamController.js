@@ -1,19 +1,42 @@
 const fs = require('fs');
 const path = require('path');
 
-// Ruta del archivo grande a transmitir
-const filePath = path.join(__dirname, '../data/large-file.txt');
+// Ruta base del archivo grande a transmitir
+const baseFilePath = path.join(__dirname, '../data/large-file');
+const dirPath = path.dirname(baseFilePath);  // Ruta del directorio
 
-// Función para crear un archivo grande de 100MB si no existe
+// Función para generar un nombre único para el archivo
+const generateUniqueFileName = () => {
+  let counter = 0;
+  let filePath = `${baseFilePath}.txt`;
+
+  // Verifica si el archivo existe y genera un nombre único
+  while (fs.existsSync(filePath)) {
+    counter++;
+    filePath = `${baseFilePath}-${counter}.txt`;  // Nuevo nombre con sufijo numérico
+  }
+
+  return filePath;
+};
+
+// Función para crear el archivo grande de 10MB si no existe
 const createLargeFile = () => {
   const largeText = 'A'.repeat(1024 * 1024); // 1MB de datos
-  if (!fs.existsSync(filePath)) {
-    // Solo creamos el archivo si no existe
-    fs.writeFile(filePath, largeText.repeat(100), (err) => {  // Crea un archivo de 100MB
-      if (err) throw err;
-      console.log('Archivo grande creado');
-    });
+
+  // Crear el directorio si no existe
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });  // Crea el directorio si no existe
+    console.log('Directorio creado:', dirPath);
   }
+
+  // Generar el nombre único para el archivo
+  const filePath = generateUniqueFileName();
+
+  // Crear el archivo de 10MB
+  fs.writeFile(filePath, largeText.repeat(10), (err) => {  // Crea un archivo de 10MB
+    if (err) throw err;
+    console.log(`Archivo grande de 10MB creado: ${filePath}`);
+  });
 };
 
 // Controlador para manejar la transmisión de datos grandes
@@ -26,6 +49,7 @@ const handleStreamData = (req, res) => {
   res.setHeader('Transfer-Encoding', 'chunked');  // Indicar que vamos a enviar los datos en fragmentos
 
   // Iniciar un flujo de lectura del archivo (simulando una gran transmisión de datos)
+  const filePath = generateUniqueFileName();  // Generar nombre único para el archivo
   const fileStream = fs.createReadStream(filePath);
 
   // Enviar los datos en fragmentos (chunks)
